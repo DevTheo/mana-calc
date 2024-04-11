@@ -139,7 +139,7 @@ export default function ManaCalc() {
         {showCalc && (
             <div>
                 <hr />
-                <h3>Results:</h3>
+                <h3>Results (using the "Fleck" method):</h3>
                 <table>
                     <tr>
                     <td>W:</td>
