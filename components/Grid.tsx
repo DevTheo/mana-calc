@@ -15,10 +15,10 @@ export default function Grid({rowCount, columnCount, className, children} : Grid
         rowsModifier = `${rowCount}`;
     }
 
-    className = className ? `{className.trim()} ` : "";
-    className = ` {className}grid-rows-${rowsModifier} grid-cols-${columnCount}`;
+    const rowsClass = rowCount ? ` grid-rows-${rowsModifier}` : "";
+    const colsClass = ` grid-cols-${columnCount}`;
 
-    return (<div className={className}>
+    return (<div className={(`${(className || "").trim()} grid ${rowsClass}${colsClass}`).trim()}>
         {children}
     </div>);
 }
