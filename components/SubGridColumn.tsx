@@ -12,7 +12,7 @@ export type SubGridColumnComponentProps = {
     children: ComponentChildren
 }
 
-export default function Grid({className, row, rowend, rowspan, col, colend, colspan, colspanAuto, children} : SubGridColumnComponentProps) {
+export default function SubGrid({className, row, rowend, rowspan, col, colend, colspan, colspanAuto, children} : SubGridColumnComponentProps) {
 
     className = className ? `{className.trim()} grid grid-cols-subgrid` : "";
     const rowClass = row ? ` grid-row-start-${row}` : "";

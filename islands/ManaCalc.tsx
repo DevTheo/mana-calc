@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import Grid from "../components/SubGridColumn.tsx";
+import StackPanel, { StackPanelOrientation } from "../components/StackPanel.tsx";
 
 enum Color {
     Colorless,White,Blue,Black,Red,Green
@@ -140,23 +140,29 @@ export default function ManaCalc() {
             <div>
                 <hr />
                 <h3>Results (using the "Fleck" method):</h3>
-                <table>
-                    <tr>
-                    <td>W:</td>
-                    <td>U:</td>
-                    <td>B:</td>
-                    <td>R:</td>
-                    <td>G:</td>
-                    </tr>
-                    <tr>
-                    <td>{fleckCalcResult.w}</td>
-                    <td>{fleckCalcResult.u}</td>
-                    <td>{fleckCalcResult.b}</td>
-                    <td>{fleckCalcResult.r}</td>
-                    <td>{fleckCalcResult.g}</td>
-                    </tr>
-                </table>
-            </div>)}        
+                <StackPanel orientation={StackPanelOrientation.Horizontal} className="gap-x-4">
+                    <StackPanel orientation={StackPanelOrientation.Vertical}>
+                        <div>W</div>
+                        <div>{fleckCalcResult.w}</div>
+                    </StackPanel>
+                    <StackPanel orientation={StackPanelOrientation.Vertical}>
+                        <div>U</div>
+                        <div>{fleckCalcResult.u}</div>
+                    </StackPanel>
+                    <StackPanel orientation={StackPanelOrientation.Vertical}>
+                        <div>B</div>
+                        <div>{fleckCalcResult.b}</div>
+                    </StackPanel>
+                    <StackPanel orientation={StackPanelOrientation.Vertical}>
+                        <div>R</div>
+                        <div>{fleckCalcResult.r}</div>
+                    </StackPanel>
+                    <StackPanel orientation={StackPanelOrientation.Vertical}>
+                        <div>G</div>
+                        <div>{fleckCalcResult.g}</div>
+                    </StackPanel>
+                </StackPanel>
+           </div>)}        
         </div>
     );
 }
