@@ -1,5 +1,6 @@
 import { useState } from "preact/hooks";
 import StackPanel, { StackPanelOrientation } from "../components/StackPanel.tsx";
+import ManaSymbol, { ManaSymbolType } from "../components/ManaSymbol.tsx";
 
 enum Color {
     Colorless,White,Blue,Black,Red,Green
@@ -101,11 +102,11 @@ export default function ManaCalc() {
             </td>
             </tr>
             <tr>
-            <td>W:</td>
-            <td>U:</td>
-            <td>B:</td>
-            <td>R:</td>
-            <td>G:</td>
+            <td><ManaSymbol type={ManaSymbolType.White} /></td>
+            <td><ManaSymbol type={ManaSymbolType.Blue} /></td>
+            <td><ManaSymbol type={ManaSymbolType.Black} /></td>
+            <td><ManaSymbol type={ManaSymbolType.Red} /></td>
+            <td><ManaSymbol type={ManaSymbolType.Green} /></td>
             </tr>
             <tr>
             <td>
@@ -142,23 +143,23 @@ export default function ManaCalc() {
                 <h3>Results (using the "Fleck" method):</h3>
                 <StackPanel orientation={StackPanelOrientation.Horizontal} className="gap-x-4">
                     <StackPanel orientation={StackPanelOrientation.Vertical}>
-                        <div>W</div>
+                        <div><ManaSymbol type={ManaSymbolType.White} /></div>
                         <div>{fleckCalcResult.w}</div>
                     </StackPanel>
                     <StackPanel orientation={StackPanelOrientation.Vertical}>
-                        <div>U</div>
+                    <div><ManaSymbol type={ManaSymbolType.Blue} /></div>
                         <div>{fleckCalcResult.u}</div>
                     </StackPanel>
                     <StackPanel orientation={StackPanelOrientation.Vertical}>
-                        <div>B</div>
+                        <div><ManaSymbol type={ManaSymbolType.Black} /></div>
                         <div>{fleckCalcResult.b}</div>
                     </StackPanel>
                     <StackPanel orientation={StackPanelOrientation.Vertical}>
-                        <div>R</div>
+                        <div><ManaSymbol type={ManaSymbolType.Red} /></div>
                         <div>{fleckCalcResult.r}</div>
                     </StackPanel>
                     <StackPanel orientation={StackPanelOrientation.Vertical}>
-                        <div>G</div>
+                        <div><ManaSymbol type={ManaSymbolType.Green} /></div>
                         <div>{fleckCalcResult.g}</div>
                     </StackPanel>
                 </StackPanel>

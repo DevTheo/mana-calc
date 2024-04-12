@@ -1,5 +1,6 @@
 import Grid from "../components/Grid.tsx";
 import Column from "../components/Column.tsx";
+import ManaSymbol, { ManaSymbolType } from "../components/ManaSymbol.tsx";
 
 export default function GridTest() {
 
@@ -15,13 +16,15 @@ export default function GridTest() {
             
             {/* Row 2 */}
             <Column className="text-center bg-amber-50">
-              WU
+              <ManaSymbol type={ManaSymbolType.White} />
+              <ManaSymbol type={ManaSymbolType.Blue} />
             </Column>
             <Column className="text-center bg-amber-50 pr-1 rounded-none border-r-2 border-black">
               "No Spells"/Plot
             </Column>
             <Column className="text-center bg-amber-50">
-              UB
+                <ManaSymbol type={ManaSymbolType.Blue} />
+                <ManaSymbol type={ManaSymbolType.Black} />
             </Column>
             <Column className="text-center bg-amber-50">
               Crime Control
@@ -29,13 +32,15 @@ export default function GridTest() {
 
             {/* Row 3 */}
             <Column className="text-center">
-              BR
+                <ManaSymbol type={ManaSymbolType.Black} />
+                <ManaSymbol type={ManaSymbolType.Red} />
             </Column>
             <Column className="text-center pr-1 rounded-none border-r-2 border-black">
               Outlaws
             </Column>
             <Column className="text-center">
-              RG
+              <ManaSymbol type={ManaSymbolType.Red} />
+              <ManaSymbol type={ManaSymbolType.Green} />
             </Column>
             <Column className="text-center">
               Ferocious (power 4+)
@@ -43,13 +48,15 @@ export default function GridTest() {
 
             {/* Row 4 */}
             <Column className="text-center bg-amber-50">
-              GW
+              <ManaSymbol type={ManaSymbolType.Green} />
+              <ManaSymbol type={ManaSymbolType.White} />
             </Column>
             <Column className="text-center bg-amber-50 pr-1 border-r-2 border-black">
               Mounts/Vehicles
             </Column>
             <Column className="text-center bg-amber-50">
-              WB
+                <ManaSymbol type={ManaSymbolType.White} />
+                <ManaSymbol type={ManaSymbolType.Black} />
             </Column>
             <Column className="text-center bg-amber-50">
               Sacrifice
@@ -57,13 +64,15 @@ export default function GridTest() {
 
             {/* Row 5 */}
             <Column className="text-center">
-              UR
+                <ManaSymbol type={ManaSymbolType.Blue} />
+                <ManaSymbol type={ManaSymbolType.Red} />
             </Column>
             <Column className="text-center pr-1 border-r-2 border-black">
               Two or More Spells
             </Column>
             <Column className="text-center">
-              BG
+                <ManaSymbol type={ManaSymbolType.Black} />
+                <ManaSymbol type={ManaSymbolType.Green} />
             </Column>
             <Column className="text-center">
               Recursion (from Graveyard)
@@ -71,13 +80,15 @@ export default function GridTest() {
 
             {/* Row 6 */}
             <Column className="text-center bg-amber-50">
-              RW
+              <ManaSymbol type={ManaSymbolType.Red} />
+              <ManaSymbol type={ManaSymbolType.White} />
             </Column>
             <Column className="text-center bg-amber-50 pr-1 border-r-2 border-black">
               Mercenary Aggro
             </Column>
             <Column className="text-center bg-amber-50">
-              GU
+              <ManaSymbol type={ManaSymbolType.Green} />
+              <ManaSymbol type={ManaSymbolType.Blue} />
             </Column>
             <Column className="text-center bg-amber-50">
               Big Mana/Plot
