@@ -132,7 +132,7 @@ export default function ManaCalc() {
             </tr>
             <tr>
             <td colspan={5} className={`text-right`}>
-                <button type="button" onClick={() => calculate()}>Calc</button>
+                <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => calculate()}>Calc</button>
             </td>
             </tr>
         </table>
