@@ -1,4 +1,5 @@
-import { useState } from "preact/hooks";
+import Column from "../components/Column.tsx";
+import Grid from "../components/Grid.tsx";
 import ManaCalc from "../islands/ManaCalc.tsx";
 
 export default function Home() {
@@ -14,7 +15,6 @@ export default function Home() {
           alt="the Fresh logo: a sliced lemon dripping with juice"
         />
         <ManaCalc />
-
       </div>
     </div>
   );

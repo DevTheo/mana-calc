@@ -13,13 +13,15 @@ export type ColumnComponentProps = {
 }
 
 export default function Column({row, rowend, col, colend, colspanAuto, colspan, rowspan, className, children}: ColumnComponentProps) {
-    className = className ? `{className.trim()}` : "";
+    className = className ? `${className.trim()}` : "";
 
     const rowClass = row ? ` grid-row-start-${row}` : "";
     const rowEndClass = rowend ? ` grid-row-end-${rowend}` : "";
+    rowspan = !rowEndClass && !rowspan ? 1 : rowspan;
     const rowSpanClass = rowspan ? ` grid-row-span-${rowspan}` : "";
     const colClass = col ? ` grid-col-start-${col}` : "";
     const colEndClass = colend ? ` grid-col-end-${colend}` : "";
+    colspan = !colEndClass && !colspan ? 1 : colspan;
     const colSpanClass = colspan ? ` grid-col-span-${colspan}` : "";
     const colspanAutoClass = colspanAuto ? ` grid-col-span-auto` : "";
 
