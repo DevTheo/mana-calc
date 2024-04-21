@@ -1,4 +1,5 @@
 export enum ManaSymbolType {
+    Colorless,
     White,
     Blue,
     Black,
@@ -8,6 +9,8 @@ export enum ManaSymbolType {
 
 export default function ManaSymbol({type}: {type: ManaSymbolType}) {
     switch(type) {
+        case ManaSymbolType.Colorless:
+            return (<span className="text-slate-500"><i class="ms ms-c ms-cost ms-shadow"></i></span>);
         case ManaSymbolType.White:
             return (<span className="text-white"><i class="ms ms-w ms-cost ms-shadow"></i></span>);
         case ManaSymbolType.Blue:

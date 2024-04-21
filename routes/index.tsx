@@ -1,6 +1,5 @@
-import Column from "../components/Column.tsx";
-import Grid from "../components/Grid.tsx";
-import ManaCalc from "../islands/ManaCalc.tsx";
+import ManaCalcTabs from "../islands/ManaCalcTabs.tsx";
+import { signal } from "@preact/signals";
 
 export default function Home() {
 
@@ -14,7 +13,7 @@ export default function Home() {
           height="128"
           alt="the Fresh logo: a sliced lemon dripping with juice"
         /> */}
-        <ManaCalc />
+        <ManaCalcTabs />
       </div>
     </div>
   );

@@ -1,29 +1,7 @@
 import { useState } from "preact/hooks";
 import StackPanel, { StackPanelOrientation } from "../components/StackPanel.tsx";
 import ManaSymbol, { ManaSymbolType } from "../components/ManaSymbol.tsx";
-
-enum Color {
-    Colorless,White,Blue,Black,Red,Green
-}
-
-const nameToColor = (name: string) => {
-    if(name.startsWith("W")) return Color.White;
-    if(name.startsWith("U")) return Color.Blue;
-    if(name.startsWith("B")) return Color.Black;
-    if(name.startsWith("R")) return Color.Red;
-    if(name.startsWith("G")) return Color.Green;
-        
-    return Color.Colorless;
-}
-
-type colorSet = {
-    c: number,
-    w: number,
-    u: number,
-    b: number,
-    r: number,
-    g: number
-}
+import { Color, colorSet, nameToColor } from "../models/ColorModels.ts";
 
 export default function ManaCalc() {
     const [landCount, setLandCount] = useState<number>(0);
@@ -95,75 +73,105 @@ export default function ManaCalc() {
         <div>
             <table>
             <tr>
-            <td colspan={2} className={`text-right`}>Land Count:</td>
-            <td colspan={3} className={`text-left`}>
-                <input type="number" id="landCount" name="landCount" min="0" max="99" 
-                    value={landCount} onChange={handleOnChange} />
-            </td>
+                <td colspan={6} className={`text-right`}>
+                    &nbsp;
+                </td>
             </tr>
             <tr>
-            <td><ManaSymbol type={ManaSymbolType.White} /></td>
-            <td><ManaSymbol type={ManaSymbolType.Blue} /></td>
-            <td><ManaSymbol type={ManaSymbolType.Black} /></td>
-            <td><ManaSymbol type={ManaSymbolType.Red} /></td>
-            <td><ManaSymbol type={ManaSymbolType.Green} /></td>
+                <td colspan={6}>
+                    Land Count:
+                    <input type="number" id="landCount" name="landCount" min="0" max="99" 
+                        value={landCount} onChange={handleOnChange} />
+                </td>
             </tr>
             <tr>
-            <td>
-                <input type="number" id="W" name="W" min="0" max="99" 
-                    value={wValue} onChange={handleOnChange} />
-            </td>
-            <td>
-                <input type="number" id="U" name="U" min="0" max="99" 
-                    value={uValue} onChange={handleOnChange} />
-            </td>
-            <td>
-                <input type="number" id="B" name="B" min="0" max="99" 
-                    value={bValue} onChange={handleOnChange} />
-            </td>
-            <td>
-                <input type="number" id="R" name="R" min="0" max="99" 
-                    value={rValue} onChange={handleOnChange} />
-            </td>
-            <td>
-                <input type="number" id="G" name="G" min="0" max="99" 
-                    value={gValue} onChange={handleOnChange} />
-            </td>
+                <td>&nbsp;</td>    
+                <td><ManaSymbol type={ManaSymbolType.White} /></td>
+                <td><ManaSymbol type={ManaSymbolType.Blue} /></td>
+                <td><ManaSymbol type={ManaSymbolType.Black} /></td>
+                <td><ManaSymbol type={ManaSymbolType.Red} /></td>
+                <td><ManaSymbol type={ManaSymbolType.Green} /></td>
             </tr>
             <tr>
-            <td colspan={5} className={`text-right`}>
-                <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => calculate()}>Calc</button>
-            </td>
+                <td>
+                    <span className={`w-20`}>&nbsp;</span>
+                </td>
+                <td>
+                    <input type="number" id="W" name="W" min="0" max="99" className={`w-20`}
+                        value={wValue} onChange={handleOnChange} />
+                </td>
+                <td>
+                    <input type="number" id="U" name="U" min="0" max="99" className={`w-20`}
+                        value={uValue} onChange={handleOnChange} />
+                </td>
+                <td>
+                    <input type="number" id="B" name="B" min="0" max="99" className={`w-20`}
+                        value={bValue} onChange={handleOnChange} />
+                </td>
+                <td>
+                    <input type="number" id="R" name="R" min="0" max="99" className={`w-20`}
+                        value={rValue} onChange={handleOnChange} />
+                </td>
+                <td>
+                    <input type="number" id="G" name="G" min="0" max="99" className={`w-20`}
+                        value={gValue} onChange={handleOnChange} />
+                </td>
             </tr>
-        </table>
+            <tr>
+                <td colspan={6} className={`text-right`}>
+                    &nbsp;
+                </td>
+            </tr>
+            <tr>
+                <td colspan={6} className={`text-right`}>
+                    <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => calculate()}>Calc</button>
+                </td>
+            </tr>
 
-        {showCalc && (
-            <div>
-                <hr />
-                <h3>Results (using the "Fleck" method):</h3>
-                <StackPanel orientation={StackPanelOrientation.Horizontal} className="gap-x-4">
-                    <StackPanel orientation={StackPanelOrientation.Vertical}>
-                        <div><ManaSymbol type={ManaSymbolType.White} /></div>
-                        <div>{fleckCalcResult.w}</div>
-                    </StackPanel>
-                    <StackPanel orientation={StackPanelOrientation.Vertical}>
-                    <div><ManaSymbol type={ManaSymbolType.Blue} /></div>
-                        <div>{fleckCalcResult.u}</div>
-                    </StackPanel>
-                    <StackPanel orientation={StackPanelOrientation.Vertical}>
-                        <div><ManaSymbol type={ManaSymbolType.Black} /></div>
-                        <div>{fleckCalcResult.b}</div>
-                    </StackPanel>
-                    <StackPanel orientation={StackPanelOrientation.Vertical}>
-                        <div><ManaSymbol type={ManaSymbolType.Red} /></div>
-                        <div>{fleckCalcResult.r}</div>
-                    </StackPanel>
-                    <StackPanel orientation={StackPanelOrientation.Vertical}>
-                        <div><ManaSymbol type={ManaSymbolType.Green} /></div>
-                        <div>{fleckCalcResult.g}</div>
-                    </StackPanel>
-                </StackPanel>
-           </div>)}        
+        {showCalc ? (<>
+            <tr>
+                <td colspan={6}><hr /></td>
+            </tr><tr>
+                <td colspan={6}><h3>Results (using the "Fleck" method):</h3></td>
+            </tr><tr>
+                <td>&nbsp;</td>
+                <td>
+                    <ManaSymbol type={ManaSymbolType.White} />
+                </td>
+                <td>
+                    <ManaSymbol type={ManaSymbolType.Blue} />
+                </td>
+                <td>
+                    <ManaSymbol type={ManaSymbolType.Black} />
+                </td>
+                <td>
+                    <ManaSymbol type={ManaSymbolType.Red} />
+                </td>
+                <td>
+                    <ManaSymbol type={ManaSymbolType.Green} />
+                </td>
+            </tr><tr>
+                <td>&nbsp;</td>
+                <td>{fleckCalcResult.w}</td>
+                <td>{fleckCalcResult.u}</td>
+                <td>{fleckCalcResult.b}</td>
+                <td>{fleckCalcResult.r}</td>
+                <td>{fleckCalcResult.g}</td>
+           </tr></>) : (
+            <>
+            <tr>
+                <td colspan={6}>&nbsp;</td>
+            </tr><tr>
+                <td colspan={6}>&nbsp;</td>
+            </tr><tr>
+                <td colspan={6}>&nbsp;</td>
+            </tr><tr>
+                <td colspan={6}>&nbsp;</td>
+            </tr>
+            </>
+           )}
+           </table>
+        
         </div>
     );
 }
