@@ -1,7 +1,27 @@
 import { useState } from "preact/hooks";
 import { Color, colorSet, nameToColor } from "../models/ColorModels.ts";
 import ManaSymbol, { ManaSymbolType } from "../components/ManaSymbol.tsx";
-import StackPanel, { StackPanelOrientation } from "../components/StackPanel.tsx";
+import { DtGrid, DtGridCol, DtGridUnits, DtGridDef } from "../components/DtGrid/DtGrid.tsx";
+
+const gridColDefs = [
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star } 
+   ];
+const gridRowDefs = [
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.auto },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star }
+   ];
 
 enum DeckType {
     None,
@@ -117,97 +137,109 @@ export default function LandCount() {
 
     return (
         <div>
-            <table>
-                <tr>
-                    <td colspan={6}>                        
-                        Deck Type:
-                        <select onChange={deckTypeChanged}>
-                        { deckTypeOptions
-                            .map((option) => (
-                            <option selected={option.value === deckType} 
-                                    value={option.value}>{option.label}</option>)) 
-                        }
-                        </select>
-                    </td>
-                </tr><tr>
-                    <td colspan={6}>
-                        Card Count:
-                        <input id="cardCount" name="cardCount" className={`w-40`} 
-                            value={cardCount} onChange={handleOnChange}/>
-                    </td>
-                </tr><tr>
-                    <td colspan={6}>
-                        Cheap Ramp Count:
-                        <input id="rampCount" name="rampCount" className={`w-40`} 
-                            value={rampCount} onChange={handleOnChange}/>
-                    </td>
-                </tr>
-                <tr>
-                    <td><ManaSymbol type={ManaSymbolType.Colorless} /></td>
-                    <td><ManaSymbol type={ManaSymbolType.White} /></td>
-                    <td><ManaSymbol type={ManaSymbolType.Blue} /></td>
-                    <td><ManaSymbol type={ManaSymbolType.Black} /></td>
-                    <td><ManaSymbol type={ManaSymbolType.Red} /></td>
-                    <td><ManaSymbol type={ManaSymbolType.Green} /></td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="number" id="C" name="C" min="0" max="99" className={`w-20`} 
-                            value={cValue} onChange={handleOnChange} />
-                    </td>
-                    <td>
-                        <input type="number" id="W" name="W" min="0" max="99" className={`w-20`}
-                            value={wValue} onChange={handleOnChange} />
-                    </td>
-                    <td>
-                        <input type="number" id="U" name="U" min="0" max="99" className={`w-20`}
-                            value={uValue} onChange={handleOnChange} />
-                    </td>
-                    <td>
-                        <input type="number" id="B" name="B" min="0" max="99" className={`w-20`}
-                            value={bValue} onChange={handleOnChange} />
-                    </td>
-                    <td>
-                        <input type="number" id="R" name="R" min="0" max="99" className={`w-20`}
-                            value={rValue} onChange={handleOnChange} />
-                    </td>
-                    <td>
-                        <input type="number" id="G" name="G" min="0" max="99" className={`w-20`}
-                            value={gValue} onChange={handleOnChange} />
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan={6} className={`text-right`}>
-                        <button type="button" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => Calc()}>Calc</button>
-                    </td>
-                </tr>
-  
-        {showLandCalc ? (<>            
-            <tr>
-                <td colspan={6}><hr /></td>
-            </tr><tr>
-                <td colspan={6}>
-                    <h3>Recommended Lands:</h3>
-                </td>
-            </tr><tr>
-                <td colspan={6}>
-                   <h4>{Math.floor(landCalcResult + 0.5)}</h4>
-                </td>
-           </tr></>) : (
-            <>            
-            <tr>
-                <td colspan={6}>&nbsp;</td>
-            </tr><tr>
-                <td colspan={6}>
-                    <h3>&nbsp;</h3>
-                </td>
-            </tr><tr>
-                <td colspan={6}>
-                   <h4>&nbsp;</h4>
-                </td>
-           </tr></>
-           )}        
-           </table>
+            <DtGrid rowDefs={gridRowDefs} colDefs={gridColDefs} className="rounded-none border-black border-2 border-solid p-10">
+                  {/* Row 1 */}
+                <DtGridCol row={1} col={1} colspan={6}>
+                    Deck Type:
+                    <select onChange={deckTypeChanged}>
+                    { deckTypeOptions
+                        .map((option) => (
+                        <option selected={option.value === deckType} 
+                                value={option.value}>{option.label}</option>)) 
+                    }
+                    </select>
+                </DtGridCol>
+
+                  {/* Row 2 */}
+                <DtGridCol row={2} col={1} colspan={6}>
+                    Card Count:
+                    <input id="cardCount" name="cardCount" className={`w-40`} 
+                        value={cardCount} onChange={handleOnChange}/>
+                </DtGridCol>
+
+                  {/* Row 3 */}
+                <DtGridCol row={3} col={1} colspan={6}>
+                    Cheap Ramp Count:
+                    <input id="rampCount" name="rampCount" className={`w-40`} 
+                        value={rampCount} onChange={handleOnChange}/>
+                </DtGridCol>
+
+                  {/* Row 4 */}
+                <DtGridCol row={4} col={1} className="text-center">
+                    <ManaSymbol type={ManaSymbolType.Colorless} />
+                </DtGridCol>
+                <DtGridCol row={4} col={2} className="text-center">
+                    <ManaSymbol type={ManaSymbolType.White} />
+                </DtGridCol>
+                <DtGridCol row={4} col={3} className="text-center">
+                    <ManaSymbol type={ManaSymbolType.Blue} />
+                </DtGridCol>
+                <DtGridCol row={4} col={4} className="text-center">
+                    <ManaSymbol type={ManaSymbolType.Black} />
+                </DtGridCol>
+                <DtGridCol row={4} col={5} className="text-center">
+                    <ManaSymbol type={ManaSymbolType.Red} />
+                </DtGridCol>
+                <DtGridCol row={4} col={6} className="text-center">
+                    <ManaSymbol type={ManaSymbolType.Green} />
+                </DtGridCol>
+
+                  {/* Row 5 */}
+                <DtGridCol row={5} col={1} className="text-center">
+                    <input type="number" id="C" name="C" min="0" max="199" className={`w-20`} 
+                        value={cValue} onChange={handleOnChange} />
+                </DtGridCol>
+                <DtGridCol row={5} col={2} className="text-center">
+                    <input type="number" id="W" name="W" min="0" max="199" className={`w-20`} 
+                        value={wValue} onChange={handleOnChange} />
+                </DtGridCol>
+                <DtGridCol row={5} col={3} className="text-center">
+                    <input type="number" id="U" name="U" min="0" max="199" className={`w-20`} 
+                        value={uValue} onChange={handleOnChange} />
+                </DtGridCol>
+                <DtGridCol row={5} col={4} className="text-center">
+                    <input type="number" id="B" name="B" min="0" max="199" className={`w-20`} 
+                        value={bValue} onChange={handleOnChange} />
+                </DtGridCol>
+                <DtGridCol row={5} col={5} className="text-center">
+                    <input type="number" id="R" name="R" min="0" max="199" className={`w-20`} 
+                        value={rValue} onChange={handleOnChange} />
+                </DtGridCol>
+                <DtGridCol row={5} col={6} className="text-center">
+                    <input type="number" id="G" name="F" min="0" max="199" className={`w-20`} 
+                        value={gValue} onChange={handleOnChange} />
+                </DtGridCol>
+
+                  {/* Row 6 */}
+                <DtGridCol row={6} col={1} colspan={6} className={`text-right`}>
+                        <button type="button" 
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
+                            onClick={() => Calc()}>Calc</button>
+                </DtGridCol>
+
+                  {/* Row 7 (result) */}
+                <DtGridCol row={7} col={1} colspan={6}>
+                    {showLandCalc ? (<hr />) : (
+                        <>&nbsp;</>
+                    ) }
+                </DtGridCol>
+
+                  {/* Row 8 (result) */}
+                <DtGridCol row={8} col={1} colspan={6}>
+                    {showLandCalc ? (                    
+                        <h3>Recommended Lands:</h3>) : (
+                        <>&nbsp;</>
+                    ) }
+                </DtGridCol>
+
+                  {/* Row 9 (result) */}
+                <DtGridCol row={9} col={1} colspan={6}>
+                    {showLandCalc ? (                    
+                        <h4>{Math.floor(landCalcResult + 0.5)}</h4>) : (
+                        <>&nbsp;</>
+                    ) }
+                </DtGridCol>
+            </DtGrid>
       </div>
     );
 }

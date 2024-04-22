@@ -1,9 +1,7 @@
 import { useState } from "preact/hooks";
-import StackPanel, { StackPanelOrientation } from "../components/StackPanel.tsx";
 import ManaSymbol, { ManaSymbolType } from "../components/ManaSymbol.tsx";
 import { Color, colorSet, nameToColor } from "../models/ColorModels.ts";
 import { DtGrid, DtGridCol, DtGridUnits, DtGridDef } from "../components/DtGrid/DtGrid.tsx";
-
 
 const gridColDefs = [
     { units: DtGridUnits.star },
@@ -13,7 +11,7 @@ const gridColDefs = [
     { units: DtGridUnits.star },
     { units: DtGridUnits.star } 
    ];
-   const gridRowDefs = [
+const gridRowDefs = [
     { units: DtGridUnits.star },
     { units: DtGridUnits.star },
     { units: DtGridUnits.star },
@@ -92,8 +90,7 @@ export default function ManaCalc() {
 
     return (
         <div>
-            {/* rowCount={14} ?? */}
-            <DtGrid rowDefs={gridRowDefs} colDefs={gridColDefs} className="rounded-none border-black border-2 border-solid m-10">
+            <DtGrid rowDefs={gridRowDefs} colDefs={gridColDefs} className="rounded-none border-black border-2 border-solid p-10">
                 {/* Row 1 */}
                 <DtGridCol row={1} col={1} colspan={6}>
                     &nbsp;
