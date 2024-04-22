@@ -2,6 +2,7 @@ import { useState } from "preact/hooks";
 import ManaSymbol, { ManaSymbolType } from "../components/ManaSymbol.tsx";
 import { Color, colorSet, nameToColor } from "../models/ColorModels.ts";
 import { DtGrid, DtGridCol, DtGridUnits, DtGridDef } from "../components/DtGrid/DtGrid.tsx";
+import { fleckLandCalc, newColorSet } from "../services/MtgCalcs.ts";
 
 const gridColDefs = [
     { units: DtGridUnits.star },
@@ -32,14 +33,7 @@ export default function ManaCalc() {
     const [gValue, setGVal] = useState<number>(0);
 
     const [showCalc, setShowCalc] = useState<boolean>(false);
-    const [fleckCalcResult, setFleckCalcResult] = useState<colorSet>({
-        c:0,
-        w:0,
-        u:0,
-        b:0,
-        r:0,
-        g:0
-    });
+    const [fleckCalcResult, setFleckCalcResult] = useState<colorSet>(newColorSet());
   
     /*
         Build table with tailwindcss, row one should have a radio button group to determine 40, 60, or 99 card deck, 
@@ -73,17 +67,8 @@ export default function ManaCalc() {
    }
 
    const calculate = () => {
-        console.log("onClick");
-        const result = {...fleckCalcResult};
+        const result = fleckLandCalc(landCount, wValue, uValue, bValue, rValue, gValue);
 
-        const totalPips = wValue + uValue + bValue + rValue + gValue;
-        result.w = Math.floor((landCount * (wValue / totalPips)) + 0.5);
-        result.u = Math.floor((landCount * (uValue / totalPips)) + 0.5);
-        result.b = Math.floor((landCount * (bValue / totalPips)) + 0.5);
-        result.r = Math.floor((landCount * (rValue / totalPips)) + 0.5);
-        result.g = Math.floor((landCount * (gValue / totalPips)) + 0.5);
-
-        console.log(result);
         setFleckCalcResult(result);
         setShowCalc(true);
    }
@@ -169,39 +154,49 @@ export default function ManaCalc() {
                 ) : (<span>&nbsp;</span>) }
                 </DtGridCol>
                 {/* Row 9 (results) */}
-                
-                <DtGridCol row={9} col={2} className="text-center">
-                    {showCalc ? (<>
-                    <ManaSymbol type={ManaSymbolType.White} /><br />
-                    {fleckCalcResult.w} </>) : (<span>&nbsp;</span>) }
-                </DtGridCol>
-
-                <DtGridCol row={9} col={3} className="text-center">
-                    {showCalc ? (<>
-                    <ManaSymbol type={ManaSymbolType.Blue} /><br />
-                    {fleckCalcResult.u} </>) : (<span>&nbsp;</span>) }
-                </DtGridCol>
-
-                <DtGridCol row={9} col={4} className="text-center">
-                    {showCalc ? (<>
-                    <ManaSymbol type={ManaSymbolType.Black} /><br />
-                    {fleckCalcResult.b} </>) : (<span>&nbsp;</span>) }
-                </DtGridCol>
-
-                <DtGridCol row={9} col={5} className="text-center">
-                    {showCalc ? (<>
-                    <ManaSymbol type={ManaSymbolType.Red} /><br />
-                    {fleckCalcResult.r} </>) : (<span>&nbsp;</span>) }
-                </DtGridCol>
-
-                <DtGridCol row={9} col={6} className="text-center">
-                    {showCalc ? (<>
-                    <ManaSymbol type={ManaSymbolType.Green} /><br />
-                    {fleckCalcResult.g} </>) : (<span>&nbsp;</span>) }
-                </DtGridCol>
+                <FleckCalcResults row={9} results={fleckCalcResult} isShown={showCalc} />
 
             </DtGrid>
        
         </div>
     );
 }
+
+export type FleckCalcResultsProps = {
+    row: number,
+    results: colorSet,
+    isShown: boolean
+}
+export function FleckCalcResults({row, results, isShown}: FleckCalcResultsProps) { 
+    return (<>
+        <DtGridCol row={row} col={2} className="text-center">
+            {isShown ? (<>
+            <ManaSymbol type={ManaSymbolType.White} /><br />
+            {results.w} </>) : (<span>&nbsp;</span>) }
+        </DtGridCol>
+
+        <DtGridCol row={row} col={3} className="text-center">
+            {isShown ? (<>
+            <ManaSymbol type={ManaSymbolType.Blue} /><br />
+            {results.u} </>) : (<span>&nbsp;</span>) }
+        </DtGridCol>
+
+        <DtGridCol row={row} col={4} className="text-center">
+            {isShown ? (<>
+            <ManaSymbol type={ManaSymbolType.Black} /><br />
+            {results.b} </>) : (<span>&nbsp;</span>) }
+        </DtGridCol>
+
+        <DtGridCol row={row} col={5} className="text-center">
+            {isShown ? (<>
+            <ManaSymbol type={ManaSymbolType.Red} /><br />
+            {results.r} </>) : (<span>&nbsp;</span>) }
+        </DtGridCol>
+
+        <DtGridCol row={row} col={6} className="text-center">
+            {isShown ? (<>
+            <ManaSymbol type={ManaSymbolType.Green} /><br />
+            {results.g} </>) : (<span>&nbsp;</span>) }
+        </DtGridCol>
+    </>); 
+} // FleckResults

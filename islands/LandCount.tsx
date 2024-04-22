@@ -2,6 +2,8 @@ import { useState } from "preact/hooks";
 import { Color, colorSet, nameToColor } from "../models/ColorModels.ts";
 import ManaSymbol, { ManaSymbolType } from "../components/ManaSymbol.tsx";
 import { DtGrid, DtGridCol, DtGridUnits, DtGridDef } from "../components/DtGrid/DtGrid.tsx";
+import { newColorSet, fleckLandCalc } from "../services/MtgCalcs.ts";
+import { FleckCalcResults } from "./ManaCalc.tsx";
 
 const gridColDefs = [
     { units: DtGridUnits.star },
@@ -68,7 +70,10 @@ export default function LandCount() {
 
     const [showLandCalc, setLandShowCalc] = useState<boolean>(false);
     const [landCalcResult, setLandCalcResult] = useState<number>(0);
-  
+
+    const [showFleckCalc, setShowFleckCalc] = useState<boolean>(false);
+    const [fleckCalcResult, setFleckCalcResult] = useState<colorSet>(newColorSet());
+
     /*
         Build table with tailwindcss, row one should have a radio button group to determine 40, 60, or 99 card deck, 
         row 2 should have a "card count" field, and row 3 should have the following fields: tag, mana value, C, W, U, B, R, G, and is ramp 
@@ -117,12 +122,15 @@ export default function LandCount() {
         }
 
         const totalPips = cValue + wValue + uValue + bValue + rValue + gValue;
-        console.log(`${totalPips} / ${cardCount}`);
         const avgManaVal = Math.floor((totalPips / cardCount) + 0.5);
         const result = deckTypeOption.landCalc(avgManaVal, rampCount, false);
-        console.log(result);
         setLandCalcResult(result);
         setLandShowCalc(true);
+
+        const fleckResults = fleckLandCalc(result, wValue, uValue, bValue, rValue, gValue);
+        setFleckCalcResult(fleckResults);
+        setShowFleckCalc(true);
+
    }
 
    function deckTypeChanged(event: Event): void {
@@ -227,18 +235,13 @@ export default function LandCount() {
                   {/* Row 8 (result) */}
                 <DtGridCol row={8} col={1} colspan={6}>
                     {showLandCalc ? (                    
-                        <h3>Recommended Lands:</h3>) : (
+                        <h3>Recommended Lands: <b>{Math.floor(landCalcResult + 0.5)}</b></h3>) : (
                         <>&nbsp;</>
                     ) }
                 </DtGridCol>
 
-                  {/* Row 9 (result) */}
-                <DtGridCol row={9} col={1} colspan={6}>
-                    {showLandCalc ? (                    
-                        <h4>{Math.floor(landCalcResult + 0.5)}</h4>) : (
-                        <>&nbsp;</>
-                    ) }
-                </DtGridCol>
+                {/* Row 10 (fleck result) */}
+                <FleckCalcResults row={9} results={fleckCalcResult} isShown={showFleckCalc} />
             </DtGrid>
       </div>
     );
