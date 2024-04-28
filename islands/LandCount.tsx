@@ -2,16 +2,13 @@ import { useState } from "preact/hooks";
 import { Color, colorSet, nameToColor } from "../models/ColorModels.ts";
 import ManaSymbol, { ManaSymbolType } from "../components/ManaSymbol.tsx";
 import { DtGrid, DtGridCol, DtGridUnits, DtGridDef } from "../components/DtGrid/DtGrid.tsx";
-import { newColorSet, fleckLandCalc } from "../services/MtgCalcs.ts";
+import { newColorSet, fleckLandCalc, DeckType, deckTypeOptions } from "../services/MtgCalcs.ts";
 import { FleckCalcResults } from "./ManaCalc.tsx";
 
 const gridColDefs = [
     { units: DtGridUnits.star },
     { units: DtGridUnits.star },
     { units: DtGridUnits.star },
-    { units: DtGridUnits.star },
-    { units: DtGridUnits.star },
-    { units: DtGridUnits.star } 
    ];
 const gridRowDefs = [
     { units: DtGridUnits.star },
@@ -20,41 +17,14 @@ const gridRowDefs = [
     { units: DtGridUnits.star },
     { units: DtGridUnits.star },
     { units: DtGridUnits.star },
-    { units: DtGridUnits.auto },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.star },
+    { units: DtGridUnits.auto }, // <hr />
+    { units: DtGridUnits.star },
     { units: DtGridUnits.star },
     { units: DtGridUnits.star }
    ];
-
-enum DeckType {
-    None,
-    Limited,
-    Constructed,
-    Commander
-}
-
-type DeckTypeOption = {
-    label: string,
-    value: DeckType,
-    cardCount: number,
-    landCalc: (avgCmc: number, rampCount: number, hasCompanion: boolean) => number
-}
-
-const deckTypeOptions = [
-    {label: "Select a Deck Type", value: DeckType.None, cardCount: 0, landCalc: (avgCmc: number, rampCount: number, hasCompanion: boolean= false) => {
-        return 0;
-    } },
-    {label: "Limited", value: DeckType.Limited, cardCount: 40, landCalc: (avgCmc: number, rampCount: number, hasCompanion: boolean = false) => {
-        console.log(`(13.06 + (${avgCmc} * 1.267)) - (${rampCount} * 0.28) + ((${hasCompanion ? 1 : 0}) * 0.27)`)
-        return (13.06 + (avgCmc * 1.267)) - (rampCount * 0.28) + ((hasCompanion ? 1 : 0) * 0.27);
-    } },
-    {label: "Constructed", value: DeckType.Constructed, cardCount: 60, landCalc: (avgCmc: number, rampCount: number, hasCompanion: boolean= false) => {
-        return (19.59 + (avgCmc * 1.9)) - (rampCount * 0.28) + ((hasCompanion ? 1 : 0) * 0.27);
-    } },
-    {label: "Commander", value: DeckType.Commander, cardCount: 99, landCalc: (avgCmc: number, rampCount: number, hasCompanion: boolean= false) => {
-        return (31.42 + (avgCmc * 3.13) - (rampCount * 0.28)) + ((hasCompanion ? 2 : 1) * 0.27) - 1.35;
-    } }
-] as Array<DeckTypeOption>;
-
 
 export default function LandCount() {
     const [deckType, setDeckType] = useState<DeckType>(DeckType.None);
@@ -145,10 +115,12 @@ export default function LandCount() {
 
     return (
         <div>
-            <DtGrid rowDefs={gridRowDefs} colDefs={gridColDefs} className="rounded-none border-black border-2 border-solid p-10">
+            <DtGrid rowDefs={gridRowDefs} colDefs={gridColDefs} className="rounded-none border-black border-2 border-solid p-10 gap-x-2">
                   {/* Row 1 */}
-                <DtGridCol row={1} col={1} colspan={6}>
+                <DtGridCol row={1} col={1}>
                     Deck Type:
+                </DtGridCol>
+                <DtGridCol row={1} col={2} colspan={2}>
                     <select onChange={deckTypeChanged}>
                     { deckTypeOptions
                         .map((option) => (
@@ -159,16 +131,20 @@ export default function LandCount() {
                 </DtGridCol>
 
                   {/* Row 2 */}
-                <DtGridCol row={2} col={1} colspan={6}>
+                <DtGridCol row={2} col={1}>
                     Card Count:
-                    <input id="cardCount" name="cardCount" className={`w-40`} 
+                </DtGridCol>
+                <DtGridCol row={2} col={2} colspan={2}>
+                    <input type="number" id="cardCount" name="cardCount" className={`w-30`} 
                         value={cardCount} onChange={handleOnChange}/>
                 </DtGridCol>
 
                   {/* Row 3 */}
-                <DtGridCol row={3} col={1} colspan={6}>
-                    Cheap Ramp Count:
-                    <input id="rampCount" name="rampCount" className={`w-40`} 
+                <DtGridCol row={3} col={1}>
+                    # of Cheap Ramp:
+                </DtGridCol>
+                <DtGridCol row={3} col={2} colspan={2}>
+                    <input type="number" id="rampCount" name="rampCount" className={`w-30`} 
                         value={rampCount} onChange={handleOnChange}/>
                 </DtGridCol>
 
@@ -181,15 +157,6 @@ export default function LandCount() {
                 </DtGridCol>
                 <DtGridCol row={4} col={3} className="text-center">
                     <ManaSymbol type={ManaSymbolType.Blue} />
-                </DtGridCol>
-                <DtGridCol row={4} col={4} className="text-center">
-                    <ManaSymbol type={ManaSymbolType.Black} />
-                </DtGridCol>
-                <DtGridCol row={4} col={5} className="text-center">
-                    <ManaSymbol type={ManaSymbolType.Red} />
-                </DtGridCol>
-                <DtGridCol row={4} col={6} className="text-center">
-                    <ManaSymbol type={ManaSymbolType.Green} />
                 </DtGridCol>
 
                   {/* Row 5 */}
@@ -205,35 +172,48 @@ export default function LandCount() {
                     <input type="number" id="U" name="U" min="0" max="199" className={`w-20`} 
                         value={uValue} onChange={handleOnChange} />
                 </DtGridCol>
-                <DtGridCol row={5} col={4} className="text-center">
+
+                  {/* (new) Row 6 */}
+                <DtGridCol row={6} col={1} className="text-center">
+                    <ManaSymbol type={ManaSymbolType.Black} />
+                </DtGridCol>
+                <DtGridCol row={6} col={2} className="text-center">
+                    <ManaSymbol type={ManaSymbolType.Red} />
+                </DtGridCol>
+                <DtGridCol row={6} col={3} className="text-center">
+                    <ManaSymbol type={ManaSymbolType.Green} />
+                </DtGridCol>
+
+                  {/* (new) Row 7 */}
+                <DtGridCol row={7} col={1} className="text-center">
                     <input type="number" id="B" name="B" min="0" max="199" className={`w-20`} 
                         value={bValue} onChange={handleOnChange} />
                 </DtGridCol>
-                <DtGridCol row={5} col={5} className="text-center">
+                <DtGridCol row={7} col={2} className="text-center">
                     <input type="number" id="R" name="R" min="0" max="199" className={`w-20`} 
                         value={rValue} onChange={handleOnChange} />
                 </DtGridCol>
-                <DtGridCol row={5} col={6} className="text-center">
+                <DtGridCol row={7} col={3} className="text-center">
                     <input type="number" id="G" name="F" min="0" max="199" className={`w-20`} 
                         value={gValue} onChange={handleOnChange} />
                 </DtGridCol>
 
-                  {/* Row 6 */}
-                <DtGridCol row={6} col={1} colspan={6} className={`text-right`}>
+                  {/* Row 8 */}
+                <DtGridCol row={8} col={1} colspan={3} className={`text-right`}>
                         <button type="button" 
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
                             onClick={() => Calc()}>Calc</button>
                 </DtGridCol>
 
-                  {/* Row 7 (result) */}
-                <DtGridCol row={7} col={1} colspan={6}>
+                  {/* Row 9(result) */}
+                <DtGridCol row={9} col={1} colspan={3}>
                     {showLandCalc ? (<hr />) : (
                         <>&nbsp;</>
                     ) }
                 </DtGridCol>
 
                   {/* Row 8 (result) */}
-                <DtGridCol row={8} col={1} colspan={6}>
+                <DtGridCol row={9} col={1} colspan={3}>
                     {showLandCalc ? (                    
                         <h3>Recommended Lands: <b>{Math.floor(landCalcResult + 0.5)}</b></h3>) : (
                         <>&nbsp;</>
@@ -241,7 +221,7 @@ export default function LandCount() {
                 </DtGridCol>
 
                 {/* Row 10 (fleck result) */}
-                <FleckCalcResults row={9} results={fleckCalcResult} isShown={showFleckCalc} />
+                <FleckCalcResults row={10} results={fleckCalcResult} isShown={showFleckCalc} />
             </DtGrid>
       </div>
     );

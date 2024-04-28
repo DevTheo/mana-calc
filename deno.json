@@ -5,6 +5,7 @@
     "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
     "manifest": "deno task cli manifest $(pwd)",
     "start": "deno run -A --watch=static/,routes/ dev.ts",
+    "test": "deno test -A ",
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update ."
@@ -29,7 +30,8 @@
     "tailwindcss": "npm:tailwindcss@3.4.1",
     "tailwindcss/": "npm:/tailwindcss@3.4.1/",
     "tailwindcss/plugin": "npm:/tailwindcss@3.4.1/plugin.js",
-     "$std/": "https://deno.land/std@0.216.0/"
+     "$std/": "https://deno.land/std@0.216.0/",
+     "mathjs": "npm:/mathjs@9.3.0"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

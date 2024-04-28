@@ -7,12 +7,10 @@ import { fleckLandCalc, newColorSet } from "../services/MtgCalcs.ts";
 const gridColDefs = [
     { units: DtGridUnits.star },
     { units: DtGridUnits.star },
-    { units: DtGridUnits.star },
-    { units: DtGridUnits.star },
-    { units: DtGridUnits.star },
     { units: DtGridUnits.star } 
    ];
 const gridRowDefs = [
+    { units: DtGridUnits.star },
     { units: DtGridUnits.star },
     { units: DtGridUnits.star },
     { units: DtGridUnits.star },
@@ -75,80 +73,78 @@ export default function ManaCalc() {
 
     return (
         <div>
-            <DtGrid rowDefs={gridRowDefs} colDefs={gridColDefs} className="rounded-none border-black border-2 border-solid p-10">
+            <DtGrid rowDefs={gridRowDefs} colDefs={gridColDefs} className="rounded-none border-black border-2 border-solid p-10 gap-x-2">
                 {/* Row 1 */}
-                <DtGridCol row={1} col={1} colspan={6}>
-                    &nbsp;
-                </DtGridCol>
-                {/* Row 2 */}
-                <DtGridCol row={2} col={1} colspan={6}>
+                <DtGridCol row={1} col={1}>
                     Land Count:
+                </DtGridCol>
+                <DtGridCol row={1} col={2} colspan={2}>
                     <input type="number" id="landCount" name="landCount" min="0" max="99"
                         value={landCount} onChange={handleOnChange} />
                 </DtGridCol>
+                {/* Row 2 */}
+                <DtGridCol row={2} col={1}>
+                    &nbsp;
+                </DtGridCol>
+                <DtGridCol row={2} col={2}>
+                    <ManaSymbol type={ManaSymbolType.White} />
+                </DtGridCol>
+                <DtGridCol row={2} col={3}>
+                    <ManaSymbol type={ManaSymbolType.Blue} />
+                </DtGridCol>
+
                 {/* Row 3 */}
                 <DtGridCol row={3} col={1}>
                     &nbsp;
                 </DtGridCol>
                 <DtGridCol row={3} col={2}>
-                    <ManaSymbol type={ManaSymbolType.White} />
-                </DtGridCol>
-                <DtGridCol row={3} col={3}>
-                    <ManaSymbol type={ManaSymbolType.Blue} />
-                </DtGridCol>
-                <DtGridCol row={3} col={4}>
-                    <ManaSymbol type={ManaSymbolType.Black} />
-                </DtGridCol>
-                <DtGridCol row={3} col={5}>
-                    <ManaSymbol type={ManaSymbolType.Red} />
-                </DtGridCol>
-                <DtGridCol row={3} col={6}>
-                    <ManaSymbol type={ManaSymbolType.Green} />
-                </DtGridCol>
-                {/* Row 4 */}
-                <DtGridCol row={4} col={1}>
-                    &nbsp;
-                </DtGridCol>
-                <DtGridCol row={4} col={2}>
                     <input type="number" id="W" name="W" min="0" max="99" className={`w-10`}
                         value={wValue} onChange={handleOnChange} />
                 </DtGridCol>
-                <DtGridCol row={4} col={3}>
+                <DtGridCol row={3} col={3}>
                     <input type="number" id="U" name="U" min="0" max="99" className={`w-10`}
                         value={uValue} onChange={handleOnChange} />
                 </DtGridCol>
-                <DtGridCol row={4} col={4}>
+
+                {/* new Row 4 */}
+                <DtGridCol row={4} col={1}>
+                    <ManaSymbol type={ManaSymbolType.Black} />
+                </DtGridCol>
+                <DtGridCol row={4} col={2}>
+                    <ManaSymbol type={ManaSymbolType.Red} />
+                </DtGridCol>
+                <DtGridCol row={4} col={3}>
+                    <ManaSymbol type={ManaSymbolType.Green} />
+                </DtGridCol>
+
+                {/* new Row 5 */}
+                <DtGridCol row={5} col={1}>
                     <input type="number" id="B" name="B" min="0" max="99" className={`w-10`}
                         value={bValue} onChange={handleOnChange} />
                 </DtGridCol>
-                <DtGridCol row={4} col={5}>
+                <DtGridCol row={5} col={2}>
                     <input type="number" id="R" name="R" min="0" max="99" className={`w-10`}
                         value={rValue} onChange={handleOnChange} />
                 </DtGridCol>
-                <DtGridCol row={4} col={6}>
+                <DtGridCol row={5} col={3}>
                     <input type="number" id="G" name="G" min="0" max="99" className={`w-10`}
                         value={gValue} onChange={handleOnChange} />
                 </DtGridCol>
 
-                {/* Row 5 */}
-                <DtGridCol row={5} col={1} colspan={6}>
-                    &nbsp;
-                </DtGridCol>
-
                 {/* Row 6 */}
-                <DtGridCol row={6} col={1} colspan={6} className={`text-right mr-5`}>
+                <DtGridCol row={6} col={1} colspan={3} className={`text-right mr-5`}>
                     <button type="button" 
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" 
                         onClick={() => calculate()}>Calc</button>
                 </DtGridCol>
                 {/* Row 7 results */}
-                <DtGridCol row={7} col={1} colspan={6}>
+                <DtGridCol row={7} col={1} colspan={3}>
                 {showCalc ? (
                     <hr />
                 ) : (<span>&nbsp;</span>) }
                 </DtGridCol>
                 {/* Row 8 (results) */}
-                <DtGridCol row={8} col={1} colspan={6}>
+                <DtGridCol row={8} col={1} colspan={3}>
                 {showCalc ? (
                     <h3>Results (using the "Fleck" method):</h3>
                 ) : (<span>&nbsp;</span>) }
@@ -181,19 +177,19 @@ export function FleckCalcResults({row, results, isShown}: FleckCalcResultsProps)
             {results.u} </>) : (<span>&nbsp;</span>) }
         </DtGridCol>
 
-        <DtGridCol row={row} col={4} className="text-center">
+        <DtGridCol row={row+1} col={1} className="text-center">
             {isShown ? (<>
             <ManaSymbol type={ManaSymbolType.Black} /><br />
             {results.b} </>) : (<span>&nbsp;</span>) }
         </DtGridCol>
 
-        <DtGridCol row={row} col={5} className="text-center">
+        <DtGridCol row={row+1} col={2} className="text-center">
             {isShown ? (<>
             <ManaSymbol type={ManaSymbolType.Red} /><br />
             {results.r} </>) : (<span>&nbsp;</span>) }
         </DtGridCol>
 
-        <DtGridCol row={row} col={6} className="text-center">
+        <DtGridCol row={row+1} col={3} className="text-center">
             {isShown ? (<>
             <ManaSymbol type={ManaSymbolType.Green} /><br />
             {results.g} </>) : (<span>&nbsp;</span>) }
