@@ -17,22 +17,22 @@ export type DeckTypeOption = {
     label: string,
     value: DeckType,
     cardCount: number,
-    landCalc: (avgCmc: number, rampCount: number, hasCompanion: boolean) => number
+    landCalc: (avgSpellCmc: number, rampCount: number, hasCompanion: boolean) => number
 }
 
 export const deckTypeOptions = [
-    {label: "Select a Deck Type", value: DeckType.None, cardCount: 0, landCalc: (avgCmc: number, rampCount: number, hasCompanion: boolean= false) => {
+    {label: "Select a Deck Type", value: DeckType.None, cardCount: 0, landCalc: (avgSpellCmc: number, rampCount: number, hasCompanion: boolean= false) => {
         return 0;
     } },
-    {label: "Limited", value: DeckType.Limited, cardCount: 40, landCalc: (avgCmc: number, rampCount: number, hasCompanion: boolean = false) => {
-        console.log(`(13.06 + (${avgCmc} * 1.267)) - (${rampCount} * 0.28) + ((${hasCompanion ? 1 : 0}) * 0.27)`)
-        return (13.06 + (avgCmc * 1.267)) - (rampCount * 0.28) + ((hasCompanion ? 1 : 0) * 0.27);
+    {label: "Limited", value: DeckType.Limited, cardCount: 40, landCalc: (avgSpellCmc: number, rampCount: number, hasCompanion: boolean = false) => {
+        console.log(`(13.06 + (${avgSpellCmc} * 1.267)) - (${rampCount} * 0.28) + ((${hasCompanion ? 1 : 0}) * 0.27)`)
+        return (13.06 + (avgSpellCmc * 1.267)) - (rampCount * 0.28) + ((hasCompanion ? 1 : 0) * 0.27);
     } },
-    {label: "Constructed", value: DeckType.Constructed, cardCount: 60, landCalc: (avgCmc: number, rampCount: number, hasCompanion: boolean= false) => {
-        return (19.59 + (avgCmc * 1.9)) - (rampCount * 0.28) + ((hasCompanion ? 1 : 0) * 0.27);
+    {label: "Constructed", value: DeckType.Constructed, cardCount: 60, landCalc: (avgSpellCmc: number, rampCount: number, hasCompanion: boolean= false) => {
+        return (19.59 + (avgSpellCmc * 1.9)) - (rampCount * 0.28) + ((hasCompanion ? 1 : 0) * 0.27);
     } },
-    {label: "Commander", value: DeckType.Commander, cardCount: 99, landCalc: (avgCmc: number, rampCount: number, hasCompanion: boolean= false) => {
-        return (31.42 + (avgCmc * 3.13) - (rampCount * 0.28)) + ((hasCompanion ? 2 : 1) * 0.27) - 1.35;
+    {label: "Commander", value: DeckType.Commander, cardCount: 99, landCalc: (avgSpellCmc: number, rampCount: number, hasCompanion: boolean= false) => {
+        return (31.42 + (avgSpellCmc * 3.13) - (rampCount * 0.28)) + ((hasCompanion ? 2 : 1) * 0.27) - 1.35;
     } }
 ] as Array<DeckTypeOption>;
 

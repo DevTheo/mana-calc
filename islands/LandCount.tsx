@@ -29,7 +29,7 @@ const gridRowDefs = [
 export default function LandCount() {
     const [deckType, setDeckType] = useState<DeckType>(DeckType.None);
     
-    const [cardCount, setCardCount] = useState<number>(0);
+    const [spellCount, setSpellCount] = useState<number>(0);
     const [rampCount, setRampCount] = useState<number>(0);
     const [cValue, setCVal] = useState<number>(0);
     const [wValue, setWVal] = useState<number>(0);
@@ -51,8 +51,8 @@ export default function LandCount() {
    const handleOnChange = (e: Event) => {
 
     const el = e.target as HTMLInputElement;
-        if (el.id === "cardCount") {
-            setCardCount(parseInt(el.value));
+        if (el.id === "spellCount") {
+            setSpellCount(parseInt(el.value));
             return;
         } else if (el.id === "rampCount") {
             setRampCount(parseInt(el.value));
@@ -92,7 +92,7 @@ export default function LandCount() {
         }
 
         const totalPips = cValue + wValue + uValue + bValue + rValue + gValue;
-        const avgManaVal = Math.floor((totalPips / cardCount) + 0.5);
+        const avgManaVal = Math.floor((totalPips / spellCount) + 0.5);
         const result = deckTypeOption.landCalc(avgManaVal, rampCount, false);
         setLandCalcResult(result);
         setLandShowCalc(true);
@@ -132,11 +132,11 @@ export default function LandCount() {
 
                   {/* Row 2 */}
                 <DtGridCol row={2} col={1}>
-                    Card Count:
+                    Spell Count:
                 </DtGridCol>
                 <DtGridCol row={2} col={2} colspan={2}>
-                    <input type="number" id="cardCount" name="cardCount" className={`w-30`} 
-                        value={cardCount} onChange={handleOnChange}/>
+                    <input type="number" id="spellCount" name="spellCount" className={`w-30`} 
+                        value={spellCount} onChange={handleOnChange}/>
                 </DtGridCol>
 
                   {/* Row 3 */}
